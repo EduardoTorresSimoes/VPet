@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import Image, ImageTk
 import random 
 import time
 
@@ -28,6 +29,30 @@ img = PhotoImage(file=img_Path)
 my_image = my_canvas.create_image(meioX, meioY, anchor=CENTER, image=img)
 pet.posicao(meioX, meioY)
 
+def load_and_display_gif(gif_path):
+    gif = Image.open(gif_path)
+    gif = gif.resize((50, 50))  # Redimensione o GIF conforme necessário
+    gif = ImageTk.PhotoImage(gif)
+    return gif
+
+idle_gif = load_and_display_gif("Imagens/idle.gif")  # Substitua pelo caminho real do seu GIF
+sleeping_gif = load_and_display_gif("Imagens/sleeping.gif")
+walking_gif = load_and_display_gif("Imagens/walking.gif")
+carinho_gif = load_and_display_gif("Imagens/carinho.gif")  # Substitua pelo caminho real do seu GIF de carinho
+
+# def carinho():
+#     #Código para rodar um gif fazendo carinho
+    
+
+def randomAction():
+    rAction = random.randrange(0,3)
+    if rAction == 0:
+        idle()
+    elif rAction == 1:
+        sleeping()
+    else:
+        walking
+
 def clickOnIt(e):
     global img
     img = PhotoImage(file=img_Path)
@@ -35,18 +60,38 @@ def clickOnIt(e):
     pet.posicao(e.x, e.y)
     print(f'Posição atual: X:{pet.xcoord} | Y:{pet.ycoord}')
 
+def idle():
+    global img
+    # Gif Idle (Algumas variações)
+        #-> Wait random time for Idle
+
+def sleeping():
+    global img
+    # Gif Idle -> Dormir
+    # Gif Dormir
+        #-> Wait random time for sleep
+    # Gif Dormir -> Idle
+
 def walking():
     global img, randomW, randomH
     img = PhotoImage(file=img_Path)
     my_image = my_canvas.create_image(pet.xcoord, pet.ycoord, anchor=NW, image=img)
 
-    randomW = random.randrange(0, screen_width)
-    randomH = random.randrange(0, screen_height)
+    randomW = random.randrange(0, (screen_width - 235)) # "- valor" é feito a mão para 
+    randomH = random.randrange(0, (screen_height - 530))#  que a Ryo não suma da tela
+    randomSpeed = random.randrange(0,3)
+    print(randomSpeed)
+
+    if randomSpeed == 0:   # Gif Rastejando (NF: gif cansada)
+        steps = 1000
+    elif randomSpeed == 1: # Gid Andando    (NF: gif normal)
+        steps = 500
+    else:                  # Gif Correndo   (NF: gif feliz)  
+        steps = 100
 
     dx = randomW - pet.xcoord
     dy = randomH - pet.ycoord
 
-    steps = 1000  # Number of steps for smooth movement
     for i in range(steps):
         x = pet.xcoord + (i * dx) / steps
         y = pet.ycoord + (i * dy) / steps
